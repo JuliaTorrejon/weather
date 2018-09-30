@@ -91,6 +91,7 @@ if __name__ == '__main__':
     except KeyError:
         print("OPENWEATHERMAP_KEY not set")
         apikey = ""
+        exit(1)
 
     city = arguments["<city>"]
 
@@ -116,6 +117,7 @@ if __name__ == '__main__':
 
     else:
         print("Error getting weather, Status: " + str(weather["status"]))
+        exit(2)
 
 
 
