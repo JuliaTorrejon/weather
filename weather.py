@@ -21,10 +21,12 @@ from datetime import datetime
 from decimal import *
 from docopt import docopt
 
-def kelvintodegreesc(tempink):
-    return Decimal(tempink) - Decimal(273.15)
 
-def getweather(city, country, key):
+def kelvin_to_degrees_c(temp_in_k):
+    return Decimal(temp_in_k) - Decimal(273.15)
+
+
+def get_weather(city, country, key):
     # Build URL get query depending on if we have a country or not
     if country:
         query = {'q': city + ',' + country, 'appid': key}
@@ -41,10 +43,10 @@ def getweather(city, country, key):
         # print(response)
         # print(response["main"]["temp"])
         getcontext().prec = 3
-        temp = kelvintodegreesc(response["main"]["temp"])
-        maxtemp = kelvintodegreesc(response["main"]["temp_max"])
-        mintemp = kelvintodegreesc(response["main"]["temp_min"])
-        retcountry = response["sys"]["country"]
+        temp = kelvin_to_degrees_c(response["main"]["temp"])
+        max_temp = kelvin_to_degrees_c(response["main"]["temp_max"])
+        min_temp = kelvin_to_degrees_c(response["main"]["temp_min"])
+        ret_country = response["sys"]["country"]
         pressure = response["main"]["pressure"]
         humidity = response["main"]["humidity"]
         sunrise = response["sys"]["sunrise"]
@@ -55,9 +57,9 @@ def getweather(city, country, key):
         # else return status code and blank temp
         status = r.status_code
         temp = ""
-        maxtemp = ""
-        mintemp = ""
-        retcountry = ""
+        max_temp = ""
+        min_temp = ""
+        ret_country = ""
         pressure = ""
         humidity = ""
         sunrise = ""
@@ -67,10 +69,10 @@ def getweather(city, country, key):
     # Build return dict
     myweather = {}
     myweather["temp"] = temp
-    myweather["maxtemp"] = maxtemp
-    myweather["mintemp"] = mintemp
+    myweather["max_temp"] = max_temp
+    myweather["min_temp"] = min_temp
     myweather["status"] = status
-    myweather["country"] = retcountry
+    myweather["country"] = ret_country
     myweather["pressure"] = pressure
     myweather["humidity"] = humidity
     myweather["sunrise"] = sunrise
@@ -95,23 +97,23 @@ if __name__ == '__main__':
 
     city = arguments["<city>"]
 
-    weather = getweather(city, country, apikey)
+    weather = get_weather(city, country, apikey)
 
     if weather["status"] == 200:
-        tempinc = weather["temp"]
-        retcountry = weather["country"]
+        temp_in_c = weather["temp"]
+        return_country = weather["country"]
         # if we have -j return the json data
         if arguments["-j"]:
             print(weather["json"])
         else:
             # else print the default output
-            print("Temperature for " + city.title() + ", " + retcountry.upper() + ": " + str(tempinc) + u"\u2103")
+            print("Temperature for " + city.title() + ", " + return_country.upper() + ": " + str(temp_in_c) + u"\u2103")
             # print the extended info
             if arguments["-e"]:
                 print(" - Pressure: " + str(weather["pressure"]) + "mb")
                 print(" - Humidity: " + str(weather["humidity"]) + "%")
-                print(" - Max Temp: " + str(weather["maxtemp"]) + u"\u2103")
-                print(" - Min Temp: " + str(weather["mintemp"]) + u"\u2103")
+                print(" - Max Temp: " + str(weather["max_temp"]) + u"\u2103")
+                print(" - Min Temp: " + str(weather["min_temp"]) + u"\u2103")
                 print(" - Sunrise:  " + datetime.utcfromtimestamp(weather["sunrise"]).strftime('%H:%M:%S %Y-%m-%d'))
                 print(" - Sunset:   " + datetime.utcfromtimestamp(weather["sunset"]).strftime('%H:%M:%S %Y-%m-%d'))
 
