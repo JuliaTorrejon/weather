@@ -12,7 +12,7 @@ Options:
     -e  extended information output
     -j  dump the JSON formatted response
 
-An OpenWeatherMap API key MUST be provided via the OPENWEATHERMAP_KEY
+An OpenWeatherMap API key MUST be provided via the OPENWEATHERMAP_KEY environment variable.
 """
 
 import requests
