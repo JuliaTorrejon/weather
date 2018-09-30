@@ -1,0 +1,18 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Pycharm files
+.idea/
+
+# Database files
+*.sqlite3
+*.db
+
+.DS_Store
+venv/**
+staticfiles/**
+.coverage
+.tox
+build/
+.vscode/
